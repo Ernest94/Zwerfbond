@@ -1,0 +1,158 @@
+#:import MapView kivy.garden.mapview.MapView
+
+<StartWindowManager>:
+    LogginScreen:
+        id: screen1
+        name: "logginwindow"
+    RoutesIndexWindow:
+        id: screen2
+        name: "routesindexwindow"
+    RouteMap:
+        id: screen3
+        name: "routemap"
+        dag: screen2.dagindexwindow
+
+<WindowManager>:
+    RoutesIndexWindow:
+        id: screen2
+        name: "routesindexwindow"
+    RouteMap:
+        id: screen3
+        name: "routemap"
+        dag: screen2.dagindexwindow
+
+<LogginScreen>:
+    BoxLayout:
+        canvas.before:
+            Color:
+                rgb: 0.7, 0.7, 0.7
+            Rectangle:
+                size: self.size
+                pos:self.pos
+        orientation:'vertical'
+        padding: 80
+        MDLabel:
+            text:'Welkom in de Zwerfbond app'
+            halign: "center"
+            font_style:'H4'
+        MDLabel:
+            text:'Voer het wachtwoord in om de kaart te downloaden:'
+            font_style:'Body1'
+        TextInput:
+            id:password_input
+            size_hint: (.8, None)
+            height: 50
+            multiline: False
+            pos_hint: {"center_x": .5}
+        MDLabel:
+            id:error_message
+            halign: "center"
+            color: 1,0,0,1
+            text:''
+            font_style:'Body1'
+        MDLabel:
+            text:'Let op! Wij raden aan om de kaart te downloaden als u met wifi verbonden bent.'
+            font_style:'Body1'
+        ProgressBar:
+            id:progress_bar
+            max:1
+            value:0
+        MDRaisedButton:
+            id:download_button
+            text:'Download de kaart'
+            font_style:'Body1'
+            pos_hint: {"center_x": .5}
+            md_bg_color: 1, 0, 1, 1
+            on_release:
+                root.verify_password()
+
+<RoutesIndexWindow>:
+    BoxLayout:
+        orientation:'vertical'
+
+        BoxLayout:
+            canvas.before:
+                Color:
+                    rgb: 0.7, 0.7, 0.7
+                Rectangle:
+                    size: self.size
+                    pos:self.pos
+            size_hint:(1,0.2)
+            Label:
+                text:"Paastocht 2022 routes"
+                font_size:48
+                bold:True
+                size_hint:(.8,1)
+            Image:
+                source:'Icon.png'
+                size_hint_y:1
+                allow_stretch:True
+                size_hint:(.2,1)
+        BoxLayout:
+            orientation:'vertical'
+            Button:
+                text:"Dag 1"
+                font_size:36
+                on_release:
+                    root.btn1_pressed()
+                    app.root.current = "routemap"
+                    root.manager.transition.direction = "left"
+            Button:
+                text:"Dag 2"
+                font_size:36
+                on_release:
+                    root.btn2_pressed()
+                    app.root.current = "routemap"
+                    root.manager.transition.direction = "left"
+            Button:
+                text:"Dag 3"
+                font_size:36
+                on_release:
+                    root.btn3_pressed()
+                    app.root.current = "routemap"
+                    root.manager.transition.direction = "left"
+            Button:
+                text:"Dag 4 (6 daagse)"
+                font_size:36
+                on_release:
+                    root.btn4a_pressed()
+                    app.root.current = "routemap"
+                    root.manager.transition.direction = "left"
+            Button:
+                text:"Dag 4 (4 daagse)"
+                font_size:36
+                on_release:
+                    root.btn4b_pressed()
+                    app.root.current = "routemap"
+                    root.manager.transition.direction = "left"
+            Button:
+                text:"Dag 5"
+                font_size:36
+                on_release:
+                    root.btn5_pressed()
+                    app.root.current = "routemap"
+                    root.manager.transition.direction = "left"
+            Button:
+                text:"Dag 6"
+                font_size:36
+                on_release:
+                    root.btn6_pressed()
+                    app.root.current = "routemap"
+                    root.manager.transition.direction = "left"
+<RouteMap>:
+    FloatLayout:
+        MapView:
+            id:mapview
+            zoom: 16
+            double_tap_zoom: True
+            MapMarkerPopup:
+                source:'blue_gps_dot.png'
+                id: gps_tracker
+            MapMarkerPopup:
+                id:eind_marker
+                source: "red_flag_gps.png"
+                Label:
+                    id:label_eind_marker
+                    color: 0,0,0,1
+                    font_size: 24
+                    bold: True

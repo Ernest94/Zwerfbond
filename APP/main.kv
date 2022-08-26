@@ -1,0 +1,53 @@
+<WindowManager>:
+    RoutesIndexWindow:
+        id: screen1
+        name: "routesindexwindow"
+    RouteMap:
+        id: screen2
+        name: "routemap"
+        dag: screen1.dagindexwindow
+
+<RoutesIndexWindow>:
+    BoxLayout:
+        orientation:'vertical'
+
+        BoxLayout:
+            canvas.before:
+                Color:
+                    rgb: 0.7, 0.7, 0.7
+                Rectangle:
+                    size: self.size
+                    pos:self.pos
+            size_hint:(1,0.2)
+            Label:
+                id:label_tour_name
+                font_size:48
+                bold:True
+                size_hint:(.8,1)
+            Image:
+                source:'Icon.png'
+                size_hint_y:1
+                allow_stretch:True
+                size_hint:(.2,1)
+
+        BoxLayout:
+            id:boxlayout
+            orientation:'vertical'
+        
+<RouteMap>:
+    FloatLayout:
+        MapView:
+            id:mapview
+            zoom: 16
+            double_tap_zoom: True
+            MapMarkerPopup:
+                source:'blue_gps_dot.png'
+                id: gps_tracker
+            MapMarkerPopup:
+                id:eind_marker
+                source: "red_flag_gps.png"
+                Label:
+                    id:label_eind_marker
+                    color: 0,0,0,1
+                    font_size: 24
+                    bold: True
