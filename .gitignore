@@ -3,3 +3,6 @@
 *.gpx
 Hemelse Hike/
 Paastocht/
+build/
+dist/
+zwerfbond-ios/
