@@ -6,3 +6,4 @@ Paastocht/
 build/
 dist/
 zwerfbond-ios/
+.cache/
