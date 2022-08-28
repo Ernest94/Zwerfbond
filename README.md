@@ -1,28 +1,39 @@
 # Zwerfbond
 
-- APP
+# APP
 
-Application for Paastocht and Hemelse Hike hiking tours.
+Application for Paastocht and Hemelse Hike hiking tours. Made with [Kivy](https://kivy.org/). 
 
+---
 
-- Build iOS application
+## Run the App 
+
+Download the repository.  
+Install modules:
+> pip install kivymd==1.0.2. 
+
+(maybe some more modules need to be installed..).  
+Run the main.py file located in the APP directory: 
+> python3 main.py
+
+---
+
+## Build iOS application 
 
     https://kivy.org/doc/stable/guide/packaging-ios.html
     https://github.com/kivy/kivy-ios
     
     - toolchain build python3 openssl kivy plyer
-    - toolchain pip install plyer
-    - toolchain pip install requests
-    - toolchain pip install kivymd==1.0.2
+    - toolchain pip install plyer requests kivymd==1.0.2
     
     - XCODE:
         - Sign the app: 
         - In Resources - paastocht-info.plist. Write the GPS popup teks; adjust information property list: "Privacy - Location When In Use Usage        Description" : Deze app heeft GPS nodig.
         - Set Debug - Excluded Architextures - Architectures -Build settings -> Any iOS Simulator SDK - arm64
     
-
+---
     
-- Build Android application
+## Build Android application 
     
     https://www.youtube.com/watch?v=cuyWeS4CY5o&ab_channel=CodingDebaseNormal       
         https://github.com/CodingDebaseNormal/BuildAndSign_AAB_Python_Android_App_For_GooglePlay/blob/main/Build_Sign_AAB_PythonAndroidApp_for_GooglePlay.ipynb
@@ -45,4 +56,5 @@ Application for Paastocht and Hemelse Hike hiking tours.
         
 
 
-- MISC
+# MISC
+Some  python and Jupyter notebook files to tryout some things while making the app. These files will be removed in the future if they are not relevant.
