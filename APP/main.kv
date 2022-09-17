@@ -1,16 +1,96 @@
-<WindowManager>:
-    RoutesIndexWindow:
+<WindowManagerWithLoginScreen>:
+    LoginScreen:
         id: screen1
-        name: "routesindexwindow"
-    RouteMap:
+        name: "loginscreen"
+    RoutesIndexScreen:
         id: screen2
-        name: "routemap"
-        dag: screen1.dagindexwindow
+        name: "routesindexscreen"
+    RouteMapScreen:
+        id: screen3
+        name: "routemapscreen"
+        dag: screen2.dagindexwindow
 
-<RoutesIndexWindow>:
+<WindowManager>:
+    RoutesIndexScreen:
+        id: screen2
+        name: "routesindexscreen"
+    RouteMapScreen:
+        id: screen3
+        name: "routemapscreen"
+        dag: screen2.dagindexwindow
+
+<LoginScreen>:
+    BoxLayout:
+        id:box_layout_screen
+        canvas.before:
+            Color:
+                rgb: 0.7, 0.7, 0.7
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        orientation:'vertical'
+        padding: 80
+        MDLabel:
+            text:'Welkom in de Zwerfbond app'
+            halign: "center"
+            font_style:'H4'
+            size_hint:(1,0.11)
+        MDLabel:
+            id:download_map_label
+            font_style:'Body1'
+            size_hint:(1,0.11)
+        MDLabel:
+            id:error_message
+            halign: "center"
+            color: 1,0,0,1
+            text:''
+            size_hint:(1,0.05)
+            font_size:24
+            # font_style:'Body2'
+        TextInput:
+            id:password_input
+            size_hint:(0.8,0.05)
+            height: 20
+            multiline: False
+            pos_hint: {"center_x": .5}
+        MDLabel:
+            text:''
+            size_hint:(1,0.02)
+        MDRaisedButton:
+            spacing:20
+            id:download_button
+            size_hint:(None,0.05)
+            text:'Download de kaart'
+            font_style:'Body1'
+            pos_hint: {"center_x": .5}
+            md_bg_color: 1, 0, 1, 1
+            margin: 20
+            on_release:
+                root.verify_password()
+        ProgressBar:
+            id:progress_bar
+            max:1
+            value:0
+            size_hint:(1,0.05)
+        MDLabel:
+            size_hint:(1,0.05)
+            text:'Let op! Wij raden aan om de kaart te downloaden als u met wifi verbonden bent.'
+            font_size:24
+            halign: "center"
+        Button:
+            id:cancel_button
+            size_hint:(None,0.05)
+            pos_hint: {"center_x": .5}
+            text:'Niet de nieuwe kaart downloaden'
+            halign: "center"
+            opacity: 0
+            disabled: True
+            on_release:
+                root.switch_screen()
+
+<RoutesIndexScreen>:
     BoxLayout:
         orientation:'vertical'
-
         BoxLayout:
             canvas.before:
                 Color:
@@ -24,17 +104,19 @@
                 font_size:48
                 bold:True
                 size_hint:(.8,1)
-            Image:
-                source:'Icon.png'
+            Button:
+                id:image_button
+                background_normal:'Icon.png'
                 size_hint_y:1
                 allow_stretch:True
                 size_hint:(.2,1)
-
+                on_release:
+                    root.switch_screen()
         BoxLayout:
             id:boxlayout
             orientation:'vertical'
-        
-<RouteMap>:
+
+<RouteMapScreen>:
     FloatLayout:
         MapView:
             id:mapview

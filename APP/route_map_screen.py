@@ -8,15 +8,15 @@ from mapview.mbtsource import MBTilesMapSource
 
 from route_drawer_helper import LineMapLayer
 from gps_helper import GpsHelper
-from route_menu_screen import RoutesIndexWindow
+from route_index_screen import RoutesIndexScreen
 from utils import get_all_data_from_table_for_columnNameIsValue
 import CONSTANTS
 
-class RouteMap(Screen):
+class RouteMapScreen(Screen):
     dag = StringProperty()
 
     def __init__(self, **kwargs):
-        super(RouteMap, self).__init__(**kwargs)
+        super(RouteMapScreen, self).__init__(**kwargs)
 
     def on_pre_enter(self):
         GpsHelper().run()
@@ -54,7 +54,7 @@ class RouteMap(Screen):
         self.add_widget(self.button_gps)
 
     def switch_screen(self, *args):
-        self.manager.current = 'routesindexwindow'
+        self.manager.current = 'routesindexscreen'
         self.manager.transition.direction = "right"
 
     # # add button to get route-info
