@@ -5,8 +5,8 @@ import json
 app = Flask(__name__)
 
 PATH = '../APP'
-FILE = 'map_data_Pt_2022.mbtiles'
-# FILE = 'map_data_HH_2022.mbtiles'
+# FILE = 'map_data_Pt_2022.mbtiles'
+FILE = 'map_data_HH_2022.mbtiles'
 DATABASE = PATH + "/" + FILE
 
 def get_db():

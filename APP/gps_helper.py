@@ -2,7 +2,7 @@ from kivy.app import App
 from kivy.utils import platform
 
 from utils import get_all_data_from_table_for_columnNameIsValue
-import CONSTANTS
+import GLOBALS
 
 class GpsHelper():
 
@@ -29,7 +29,7 @@ class GpsHelper():
         lat = kwargs['lat']
         lon = kwargs['lon']
 
-        result = get_all_data_from_table_for_columnNameIsValue(CONSTANTS.MAP_DATA,'metadata',"name","bounds")
+        result = get_all_data_from_table_for_columnNameIsValue(GLOBALS.MAP_DATA,'metadata',"name","bounds")
         bbox = result[0][1].split(',')
         if lat>float(bbox[1]) and lat<float(bbox[3]) and lon>float(bbox[0]) and lon<float(bbox[2]):
             gps_tracker = App.get_running_app().root.get_screen("routemap").ids.gps_tracker

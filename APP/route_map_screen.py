@@ -10,7 +10,7 @@ from route_drawer_helper import LineMapLayer
 from gps_helper import GpsHelper
 from route_index_screen import RoutesIndexScreen
 from utils import get_all_data_from_table_for_columnNameIsValue
-import CONSTANTS
+import GLOBALS
 
 class RouteMapScreen(Screen):
     dag = StringProperty()
@@ -25,12 +25,12 @@ class RouteMapScreen(Screen):
         Clock.schedule_once(self.build_map,0)
 
     def build_map(self,*args):
-        source = MBTilesMapSource(CONSTANTS.MAP_DATA)
+        source = MBTilesMapSource(GLOBALS.MAP_DATA)
         self.ids.mapview.map_source = source
         self.layer = LineMapLayer(self.dag)
         self.ids.mapview.add_layer(self.layer, mode="scatter")   # window scatter
 
-        results = get_all_data_from_table_for_columnNameIsValue(CONSTANTS.MAP_DATA,"route_coordinates","day",self.dag)
+        results = get_all_data_from_table_for_columnNameIsValue(GLOBALS.MAP_DATA,"route_coordinates","day",self.dag)
         coordinates_list = eval(results[0][1][1:-1])
 
         self.ids.mapview.center_on(coordinates_list[1],coordinates_list[0])
@@ -44,7 +44,7 @@ class RouteMapScreen(Screen):
         self.add_widget(self.button_menu)
 
         # add button to recentre on GPS or on start of route
-        result = get_all_data_from_table_for_columnNameIsValue(CONSTANTS.MAP_DATA,'metadata',"name","bounds")
+        result = get_all_data_from_table_for_columnNameIsValue(GLOBALS.MAP_DATA,'metadata',"name","bounds")
         bbox = result[0][1].split(',')
         self.button_gps = Button(size_hint=(0.12,0.08),pos_hint={'x':0.05,'y':0.03},background_normal='recentre_gps_icon.png',background_down='recentre_gps_icon_down.png')
         if self.ids.gps_tracker.lat>float(bbox[1]) and self.ids.gps_tracker.lat<float(bbox[3]) and self.ids.gps_tracker.lon>float(bbox[0]) and self.ids.gps_tracker.lon<float(bbox[2]):
@@ -63,7 +63,7 @@ class RouteMapScreen(Screen):
     # self.add_widget(self.button_info)
 
     # def route_info_popup(self,*args):
-    #     results = get_all_data_from_table_for_day(CONSTANTS.MAP_DATA,"route_info",self.dag)
+    #     results = get_all_data_from_table_for_day(GLOBALS.MAP_DATA,"route_info",self.dag)
     #     popup = Popup(
     #             title=results[0][1],
     #             content=Label(text=results[0][2],
@@ -78,7 +78,7 @@ class RouteMapScreen(Screen):
         self.ids.mapview.center_on(self.ids.gps_tracker.lat,self.ids.gps_tracker.lon)
 
     def center_map_on_route(self,*args):
-        results = get_all_data_from_table_for_columnNameIsValue(CONSTANTS.MAP_DATA,"route_coordinates","day",self.dag)
+        results = get_all_data_from_table_for_columnNameIsValue(GLOBALS.MAP_DATA,"route_coordinates","day",self.dag)
         coordinates_list = eval(results[0][1][1:-1])
         self.ids.mapview.center_on(coordinates_list[1],coordinates_list[0])
 

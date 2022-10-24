@@ -92,6 +92,7 @@
     BoxLayout:
         orientation:'vertical'
         BoxLayout:
+            id:header_boxlayout
             canvas.before:
                 Color:
                     rgb: 0.7, 0.7, 0.7
@@ -104,16 +105,8 @@
                 font_size:48
                 bold:True
                 size_hint:(.8,1)
-            Button:
-                id:image_button
-                background_normal:'Icon.png'
-                size_hint_y:1
-                allow_stretch:True
-                size_hint:(.2,1)
-                on_release:
-                    root.switch_screen()
         BoxLayout:
-            id:boxlayout
+            id:menu_boxlayout
             orientation:'vertical'
 
 <RouteMapScreen>:

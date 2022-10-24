@@ -3,7 +3,7 @@ from kivy.graphics import Color, Line
 from kivy.graphics.context_instructions import Translate, Scale
 
 from utils import get_all_data_from_table_for_columnNameIsValue
-import CONSTANTS
+import GLOBALS
 
 class LineMapLayer(MapLayer):
 
@@ -20,7 +20,7 @@ class LineMapLayer(MapLayer):
         self.zoom = mapview.zoom
         point_list=[]
 
-        results = get_all_data_from_table_for_columnNameIsValue(CONSTANTS.MAP_DATA,"route_coordinates","day",self.day)
+        results = get_all_data_from_table_for_columnNameIsValue(GLOBALS.MAP_DATA,"route_coordinates","day",self.day)
         if self.day=='6':
             coordinates_list = eval(results[0][1][2:-4])
         else:
