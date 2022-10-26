@@ -1,6 +1,7 @@
 from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager
 from kivy.network.urlrequest import UrlRequest
+from kivy.core.window import Window
 import os
 
 from login_screen import LoginScreen
@@ -24,6 +25,7 @@ class MainApp(MDApp):
         GLOBALS.BACKEND_AVAILABLE=False
 
     def build(self,*args):
+        Window.size=(375,667)
         request = UrlRequest(GLOBALS.IP_SERVER+"/get_mbtiles_name",on_failure=self.backend_not_available, on_error=self.backend_not_available, on_success=self.backend_available, timeout=2)
         request.wait()
         GLOBALS.LOCAL_MAP_DATA_AVAILABLE = os.path.exists(GLOBALS.MAP_DATA)
@@ -45,6 +47,7 @@ class MainApp(MDApp):
                 return WindowManager()
         elif GLOBALS.LOCAL_MAP_DATA_AVAILABLE and not GLOBALS.BACKEND_AVAILABLE:
             print("Mbtiles file exists in the app and backend is not available: show route menu screen.")
+            GLOBALS.LOCAL_MAP_DATA_NAME = get_all_data_from_table_for_columnNameIsValue(GLOBALS.MAP_DATA,"metadata","name","name")[0][1]
             return WindowManager()
 
 if __name__ == "__main__":

@@ -13,25 +13,30 @@ from route_index_screen import RoutesIndexScreen
 class LoginScreen(Screen):
     def __init__(self, **kwargs):
         super(LoginScreen, self).__init__(**kwargs)
-        if not GLOBALS.LOCAL_MAP_DATA_UP_TO_DATE:
-            print("local map data not up to date")
-            Clock.schedule_once(self.set_DontDownloadOption,0)
 
     def on_pre_enter(self):
         Clock.schedule_once(self.set_dynamic_layout,0)
+        if not GLOBALS.LOCAL_MAP_DATA_UP_TO_DATE and GLOBALS.LOCAL_MAP_DATA_AVAILABLE:
+            Clock.schedule_once(self.set_DontDownloadOption,0)
+            print("local map data not up to date")
 
     def set_dynamic_layout(self, *args,**kwargs):
-        self.ids.download_map_label.text = "Voer het wachtwoord in om de "+GLOBALS.BACKEND_MAP_DATA_NAME+" kaart te downloaden:"
+        self.ids.download_map_label.text = "Voer het wachtwoord in, om de [b]"+GLOBALS.BACKEND_MAP_DATA_NAME+"[/b] kaart te downloaden:"
 
     def set_DontDownloadOption(self, *args,**kwargs):
-        self.ids.cancel_button = MDRaisedButton(text="Kaart niet downloaden",font_size=24,font_style='Body1',pos_hint= {"center_x": .5})
         self.ids.cancel_button.opacity = 1
         self.ids.cancel_button.disabled = False
 
     def switch_screen(self, *args,**kwargs):
-        GLOBALS.LOCAL_MAP_DATA_AVAILABLE = True
+        self.ids.password_input.error = False
         self.manager.current = 'routesindexscreen'
         self.manager.transition.direction = "left"
+
+    def new_map_data_downloaded(self, *args,**kwargs):
+        GLOBALS.LOCAL_MAP_DATA_AVAILABLE = True
+        GLOBALS.LOCAL_MAP_DATA_UP_TO_DATE = True
+        GLOBALS.LOCAL_MAP_DATA_NAME = get_all_data_from_table_for_columnNameIsValue(GLOBALS.MAP_DATA,"metadata","name","name")[0][1]
+        self.switch_screen()
 
     def verify_password(self, *args):
         self.ids.download_button.disabled = True
@@ -44,12 +49,12 @@ class LoginScreen(Screen):
         password_req.wait()
         if password_req.result=="1":
             print("password is correct")
-            self.ids.error_message.text = ''
-            request = UrlRequest(GLOBALS.IP_SERVER+"/get_mbtiles",file_path='map_data_downloaded.mbtiles',chunk_size=8192,on_progress=self.update_progress_bar,on_success=self.switch_screen,on_error=self.print_error)
+            self.ids.password_input.error = False
+            request = UrlRequest(GLOBALS.IP_SERVER+"/get_mbtiles",file_path='map_data_downloaded.mbtiles',chunk_size=8192,on_progress=self.update_progress_bar,on_success=self.new_map_data_downloaded,on_error=self.print_error)
             request.wait()
         else:
             print("wrong password")
-            self.ids.error_message.text = "Kan kaart niet downloaden. Mogelijk is het ingevoerde wachtwoord niet correct."
+            self.ids.password_input.error = True
             self.ids.download_button.disabled = False
             if GLOBALS.LOCAL_MAP_DATA_AVAILABLE:
                 self.ids.cancel_button.disabled = False

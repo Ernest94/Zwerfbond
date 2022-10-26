@@ -4,10 +4,11 @@ import json
 
 app = Flask(__name__)
 
-PATH = '../APP'
+# PATH = '../APP'
 # FILE = 'map_data_Pt_2022.mbtiles'
-FILE = 'map_data_HH_2022.mbtiles'
-DATABASE = PATH + "/" + FILE
+# FILE = 'map_data_HH_2022.mbtiles'
+# DATABASE = PATH + "/" + FILE
+DATABASE = 'map_data_Pt_2022.mbtiles'
 
 def get_db():
     db = getattr(g, '_database', None)
