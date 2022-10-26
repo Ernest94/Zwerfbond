@@ -6,12 +6,24 @@ Application for Paastocht and Hemelse Hike hiking tours. Made with [Kivy](https:
 
 ---
 
+# BACKEND
+
+The flask backend script that serves the mapdata. The .mbtiles files are not in Git. Ask Ernest94 for the files.
+
+---
+
+# MISC
+Some  python and Jupyter notebook files to tryout some things while making the app.
+
+---
+
 ## Run the App
 
 Download the repository: git clone https://github.com/Ernest94/Zwerfbond.git
 
 Install modules Kivy:
 > python3 -m pip install "kivy[base]"
+
 > python3 -m pip install kivymd
 
 Install Flask module to run the backend script
@@ -61,6 +73,3 @@ Run the main.py file located in the APP directory:
     - run: buildozer android debug deploy
 
 ---
-
-# MISC
-Some  python and Jupyter notebook files to tryout some things while making the app.
