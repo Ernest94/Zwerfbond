@@ -2,42 +2,49 @@
 
 # APP
 
-Application for Paastocht and Hemelse Hike hiking tours. Made with [Kivy](https://kivy.org/). 
+Application for Paastocht and Hemelse Hike hiking tours. Made with [Kivy](https://kivy.org/).
 
 ---
 
-## Run the App 
+## Run the App
 
-Download the repository.  
-Install modules:
-> pip install kivymd==1.0.2. 
+Download the repository: git clone https://github.com/Ernest94/Zwerfbond.git
 
-(maybe some more modules need to be installed..).  
-Run the main.py file located in the APP directory: 
-> python3 main.py
+Install modules Kivy:
+> python3 -m pip install "kivy[base]"
+> python3 -m pip install kivymd
+
+Install Flask module to run the backend script
+> python3 -m pip install Flask
+
+Start the backend script
+> python3 Zwerfbond/BACKEND/zwerfbond_app_flask_backend.py
+
+Run the main.py file located in the APP directory:
+> python3 Zwerfbond/APP/main.py
 
 ---
 
-## Build iOS application 
+## Build iOS application
 
     https://kivy.org/doc/stable/guide/packaging-ios.html
     https://github.com/kivy/kivy-ios
-    
+
     - toolchain build python3 openssl kivy plyer
     - toolchain pip install plyer requests kivymd==1.0.2
-    
+
     - XCODE:
-        - Sign the app: 
+        - Sign the app:
         - In Resources - paastocht-info.plist. Write the GPS popup teks; adjust information property list: "Privacy - Location When In Use Usage        Description" : Deze app heeft GPS nodig.
         - Set Debug - Excluded Architextures - Architectures -Build settings -> Any iOS Simulator SDK - arm64
-    
+
 ---
-    
-## Build Android application 
-    
+
+## Build Android application
+
     https://www.youtube.com/watch?v=cuyWeS4CY5o&ab_channel=CodingDebaseNormal       
-        https://github.com/CodingDebaseNormal/BuildAndSign_AAB_Python_Android_App_For_GooglePlay/blob/main/Build_Sign_AAB_PythonAndroidApp_for_GooglePlay.ipynb
-    
+    https://github.com/CodingDebaseNormal/BuildAndSign_AAB_Python_Android_App_For_GooglePlay/blob/main/Build_Sign_AAB_PythonAndroidApp_for_GooglePlay.ipynb
+
     - use a VirtualBox running Ubuntu
     - install necessary tools: sudo apt install -y git zip unzip openjdk-8-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev
     - install buildozer: sudo -H pip3 install buildozer
@@ -53,8 +60,7 @@ Run the main.py file located in the APP directory:
     - run: buildozer android clean (mmh the python-for-android map is not there in the platform directory in .buildozer --> now I have copied this          folder from an old project)
     - run: buildozer android debug deploy
 
-        
-
+---
 
 # MISC
-Some  python and Jupyter notebook files to tryout some things while making the app. These files will be removed in the future if they are not relevant.
+Some  python and Jupyter notebook files to tryout some things while making the app.
