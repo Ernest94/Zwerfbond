@@ -1,18 +1,18 @@
 # Zwerfbond
 
-# APP
+## APP
 
 Application for Paastocht and Hemelse Hike hiking tours. Made with [Kivy](https://kivy.org/).
 
 ---
 
-# BACKEND
+## BACKEND
 
 The flask backend script that serves the mapdata. The .mbtiles files are not in Git. Ask Ernest94 for the files.
 
 ---
 
-# MISC
+## MISC
 Some  python and Jupyter notebook files to tryout some things while making the app.
 
 ---
