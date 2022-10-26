@@ -4,11 +4,10 @@ import json
 
 app = Flask(__name__)
 
-# PATH = '../APP'
+PATH = '.'
 # FILE = 'map_data_Pt_2022.mbtiles'
-# FILE = 'map_data_HH_2022.mbtiles'
-# DATABASE = PATH + "/" + FILE
-DATABASE = 'map_data_Pt_2022.mbtiles'
+FILE = 'map_data_HH_2022.mbtiles'
+DATABASE = PATH + "/" + FILE
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -45,8 +44,6 @@ def getNameOfMbtilesFile():
 def verify():
     if request.method == "POST":
         req_data = request.get_json()
-        # result = select_all_from_table_in_db("secret")
-        print(req_data['password'])
         if req_data['password']=="ZWeRFBoND":
             return json.dumps(1)
         else:

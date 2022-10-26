@@ -50,7 +50,7 @@ class LoginScreen(Screen):
         if password_req.result=="1":
             print("password is correct")
             self.ids.password_input.error = False
-            request = UrlRequest(GLOBALS.IP_SERVER+"/get_mbtiles",file_path='map_data_downloaded.mbtiles',chunk_size=8192,on_progress=self.update_progress_bar,on_success=self.new_map_data_downloaded,on_error=self.print_error)
+            request = UrlRequest(GLOBALS.IP_SERVER+"/get_mbtiles",file_path=GLOBALS.MAP_DATA,chunk_size=8192,on_progress=self.update_progress_bar,on_success=self.new_map_data_downloaded,on_error=self.print_error)
             request.wait()
         else:
             print("wrong password")
