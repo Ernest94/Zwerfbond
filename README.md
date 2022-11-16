@@ -21,6 +21,9 @@ Some  python and Jupyter notebook files to tryout some things while making the a
 
 Download the repository: git clone https://github.com/Ernest94/Zwerfbond.git
 
+Als pip nog niet is geinstalleerd:
+> sudo apt install python3-pip
+
 Install modules Kivy:
 > python3 -m pip install "kivy[base]"
 
