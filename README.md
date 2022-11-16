@@ -63,13 +63,13 @@ Run the main.py file located in the APP directory:
     - use a VirtualBox running Ubuntu
     - install necessary tools: sudo apt install -y git zip unzip openjdk-8-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev
     - install buildozer: sudo -H pip3 install buildozer
-    - create a virtual environment: virtualenv paastocht_virtualenv -p python3.9
+    - create a virtual environment: virtualenv zwerfbond_virtualenv -p python3.10
     - Activate virtualenvironment: source bin/activate
     - install necessary python packages:
         python3 -m pip install kivy
+        python3 -m pip install kivymd
         python3 -m pip install cython
-        pip install pillow
-    - make a APK_files directory with the application files init
+    - make a AAB_files directory containing the application files
     - run: buildozer init
     - adjust: buildozer.spec
     - run: buildozer android clean (mmh the python-for-android map is not there in the platform directory in .buildozer --> now I have copied this          folder from an old project)
