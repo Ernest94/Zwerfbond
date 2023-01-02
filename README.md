@@ -45,8 +45,10 @@ Run the main.py file located in the APP directory:
     https://kivy.org/doc/stable/guide/packaging-ios.html
     https://github.com/kivy/kivy-ios
 
-    - toolchain build python3 openssl kivy plyer
-    - toolchain pip install plyer requests kivymd==1.0.2
+    - toolchain build python3 kivy
+    - toolchain build pillow
+    - ttolchain build openssl plyer 
+    - toolchain pip install plyer requests kivymd
 
     - XCODE:
         - Sign the app:
