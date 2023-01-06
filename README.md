@@ -52,8 +52,8 @@ Run the main.py file located in the APP directory:
 
     - toolchain create Zwerfbond /../Zwerfbond/APP
 
-    - Regel de volgende configuratie in:
-    ![image](https://user-images.githubusercontent.com/25614233/211047756-a252741a-bc24-4f4e-9034-6f5e3ff41fdf.png)
+    - Regel de configuratie zoals in onderstaande foto in:
+
 
 
     - XCODE:
