@@ -50,6 +50,8 @@ Run the main.py file located in the APP directory:
     - toolchain build openssl plyer 
     - toolchain pip install plyer requests kivymd
 
+    - toolchain create Zwerfbond /../Zwerfbond/APP
+
     - XCODE:
         - Sign the app:
         - In Resources - paastocht-info.plist. Write the GPS popup teks; adjust information property list: "Privacy - Location When In Use Usage        Description" : Deze app heeft GPS nodig.
