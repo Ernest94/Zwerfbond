@@ -47,7 +47,7 @@ Run the main.py file located in the APP directory:
 
     - toolchain build python3 kivy
     - toolchain build pillow
-    - ttolchain build openssl plyer 
+    - toolchain build openssl plyer 
     - toolchain pip install plyer requests kivymd
 
     - XCODE:
