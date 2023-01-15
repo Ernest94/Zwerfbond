@@ -45,13 +45,24 @@ Run the main.py file located in the APP directory:
     https://kivy.org/doc/stable/guide/packaging-ios.html
     https://github.com/kivy/kivy-ios
 
-    - toolchain build python3 openssl kivy plyer
-    - toolchain pip install plyer requests kivymd==1.0.2
+    - toolchain build python3 kivy
+    - toolchain build pillow
+    - toolchain build openssl plyer 
+    - toolchain pip install plyer requests kivymd
+
+    - toolchain create Zwerfbond /../Zwerfbond/APP
+
+    - Regel de configuratie zoals in onderstaande foto in:
+
+
 
     - XCODE:
         - Sign the app:
         - In Resources - paastocht-info.plist. Write the GPS popup teks; adjust information property list: "Privacy - Location When In Use Usage        Description" : Deze app heeft GPS nodig.
         - Set Debug - Excluded Architextures - Architectures -Build settings -> Any iOS Simulator SDK - arm64
+
+
+![image](https://user-images.githubusercontent.com/25614233/211047756-a252741a-bc24-4f4e-9034-6f5e3ff41fdf.png)
 
 ---
 
