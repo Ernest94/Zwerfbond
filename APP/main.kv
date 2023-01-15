@@ -1,24 +1,3 @@
-<WindowManagerWithLoginScreen>:
-    LoginScreen:
-        id: screen1
-        name: "loginscreen"
-    RoutesIndexScreen:
-        id: screen2
-        name: "routesindexscreen"
-    RouteMapScreen:
-        id: screen3
-        name: "routemapscreen"
-        dag: screen2.dagindexwindow
-
-<WindowManager>:
-    RoutesIndexScreen:
-        id: screen2
-        name: "routesindexscreen"
-    RouteMapScreen:
-        id: screen3
-        name: "routemapscreen"
-        dag: screen2.dagindexwindow
-
 <LoginScreen>:
     BoxLayout:
         id:box_layout_screen

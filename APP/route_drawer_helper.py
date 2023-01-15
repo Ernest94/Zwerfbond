@@ -20,7 +20,7 @@ class LineMapLayer(MapLayer):
         self.zoom = mapview.zoom
         point_list=[]
 
-        results = get_all_data_from_table_for_columnNameIsValue(GLOBALS.MAP_DATA,"route_coordinates","day",self.day)
+        results = get_all_data_from_table_for_columnNameIsValue(GLOBALS.LOCAL_MAP_DATA_FILE_PATH,"route_coordinates","day",self.day)
         if self.day=='6':
             coordinates_list = eval(results[0][1][2:-4])
         else:

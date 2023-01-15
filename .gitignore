@@ -7,3 +7,4 @@ build/
 dist/
 zwerfbond-ios/
 .cache/
+APP/GLOBALS.py
