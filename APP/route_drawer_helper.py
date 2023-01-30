@@ -8,7 +8,7 @@ import GLOBALS
 class LineMapLayer(MapLayer):
 
     def __init__(self,day,**kwargs):
-        super(LineMapLayer, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.zoom = 2
         self.day = day
 

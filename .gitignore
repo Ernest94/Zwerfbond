@@ -6,5 +6,8 @@ Paastocht/
 build/
 dist/
 zwerfbond-ios/
-.cache/
 APP/GLOBALS.py
+*/__pycache__/
+cache/
+**/.DS_Store
+.vscode/*

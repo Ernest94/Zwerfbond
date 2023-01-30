@@ -1,13 +1,9 @@
 from kivy.uix.screenmanager import Screen
-from kivy.properties import StringProperty
 from kivy.clock import Clock
-from kivy.uix.button import Button
 from kivymd.uix.button import MDRectangleFlatButton
 from kivy.uix.image import Image
 from functools import partial
-from kivy.network.urlrequest import UrlRequest
 from kivy.uix.behaviors import ButtonBehavior
-import os
 
 from utils import get_all_data_from_table_for_columnNameIsValue
 import GLOBALS
@@ -17,7 +13,7 @@ class ImageButton(ButtonBehavior, Image):
 
 class RoutesIndexScreen(Screen):
     def __init__(self,**kwargs):
-        super(RoutesIndexScreen, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def on_pre_enter(self):
         GLOBALS.DAG = ""

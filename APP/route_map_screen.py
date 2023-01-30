@@ -1,20 +1,17 @@
 from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
-from kivy.uix.button import Button,Label
-from kivy.uix.popup import Popup
-from kivy.properties import StringProperty
+from kivy.uix.button import Button
 from kivy.garden.mapview import MapView
 from mapview.mbtsource import MBTilesMapSource
 
 from route_drawer_helper import LineMapLayer
 from gps_helper import GpsHelper
-from route_index_screen import RoutesIndexScreen
 from utils import get_all_data_from_table_for_columnNameIsValue
 import GLOBALS
 
 class RouteMapScreen(Screen):
     def __init__(self, **kwargs):
-        super(RouteMapScreen, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def on_pre_enter(self):
         GpsHelper().run()

@@ -1,20 +1,16 @@
 from kivy.uix.screenmanager import Screen
 from kivy.network.urlrequest import UrlRequest
-from kivymd.uix.button import MDRaisedButton
 from kivy.clock import Clock
-from kivy.app import App
-from kivy.utils import platform
 
 import json
 import os
 
 from utils import get_all_data_from_table_for_columnNameIsValue, UrlRequestWithWait
 import GLOBALS
-from route_index_screen import RoutesIndexScreen
 
 class LoginScreen(Screen):
     def __init__(self, **kwargs):
-        super(LoginScreen, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def on_pre_enter(self):
         Clock.schedule_once(self.set_dynamic_layout,0)
@@ -22,19 +18,19 @@ class LoginScreen(Screen):
             Clock.schedule_once(self.set_DontDownloadOption,0)
             print("local map data not up to date")
 
-    def set_dynamic_layout(self, *args,**kwargs):
+    def set_dynamic_layout(self,*args):
         self.ids.download_map_label.text = "Voer het wachtwoord in, om de [b]"+GLOBALS.BACKEND_MAP_DATA_NAME+"[/b] kaart te downloaden:"
 
-    def set_DontDownloadOption(self, *args,**kwargs):
+    def set_DontDownloadOption(self,*args):
         self.ids.cancel_button.opacity = 1
         self.ids.cancel_button.disabled = False
 
-    def switch_screen(self, *args,**kwargs):
+    def switch_screen(self, *args):
         self.ids.password_input.error = False
         self.manager.current = 'routes_index_screen'
         self.manager.transition.direction = "left"
 
-    def new_map_data_downloaded(self, *args,**kwargs):
+    def new_map_data_downloaded(self,*args):
         GLOBALS.LOCAL_MAP_DATA_AVAILABLE = True
         GLOBALS.LOCAL_MAP_DATA_UP_TO_DATE = True
         try:
