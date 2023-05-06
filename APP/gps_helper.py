@@ -32,7 +32,7 @@ class GpsHelper():
         result = get_all_data_from_table_for_columnNameIsValue(GLOBALS.LOCAL_MAP_DATA_FILE_PATH,'metadata',"name","bounds")
         bbox = result[0][1].split(',')
         if lat>float(bbox[1]) and lat<float(bbox[3]) and lon>float(bbox[0]) and lon<float(bbox[2]):
-            gps_tracker = App.get_running_app().root.get_screen("routemap").ids.gps_tracker
+            gps_tracker = App.get_running_app().root.get_screen("route_map_screen").ids.gps_tracker
             gps_tracker.lat = lat
             gps_tracker.lon = lon
         else:
