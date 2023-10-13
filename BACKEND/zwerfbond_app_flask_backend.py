@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 PATH = '.'
 # FILE = 'map_data_Pt_2022.mbtiles'
-FILE = 'map_data_HH_2022.mbtiles'
+FILE = 'map_data.mbtiles'
 DATABASE = PATH + "/" + FILE
 
 def get_db():
