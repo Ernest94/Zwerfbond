@@ -9,5 +9,9 @@ zwerfbond-ios/
 APP/GLOBALS.py
 */__pycache__/
 cache/
-**/.DS_Store
+*/.DS_Store
+*.DS_Store
 .vscode/*
+*.pyc
+*/.buildozer/
+*.apk
