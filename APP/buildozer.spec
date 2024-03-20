@@ -24,10 +24,10 @@ source.include_exts = py,png,jpg,kv,atlas,ttf,mbtiles
 #source.include_patterns = assets/*,images/*.png
 
 # (list) Source files to exclude (leave empty to not exclude anything)
-#source.exclude_exts = spec
+source.exclude_exts = spec,keystore
 
 # (list) List of directory to exclude (leave empty to not exclude anything)
-#source.exclude_dirs = tests, bin, venv
+source.exclude_dirs = tests, bin, venv, .buildozer
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
@@ -313,7 +313,7 @@ android.allow_backup = True
 # android.no-byte-compile-python = False
 
 # (str) The format used to package the app for release mode (aab or apk or aar).
-# android.release_artifact = aab
+android.release_artifact = aab
 
 # (str) The format used to package the app for debug mode (apk or aar).
 # android.debug_artifact = apk

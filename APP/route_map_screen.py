@@ -13,30 +13,27 @@ class RouteMapScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def on_pre_enter(self):
-        GpsHelper().run()
-
     def on_enter(self):
-        Clock.schedule_once(self.build_map,0)
-
-    def build_map(self,*args):
+        # load map data
         source = MBTilesMapSource(GLOBALS.LOCAL_MAP_DATA_FILE_PATH)
         self.ids.mapview.map_source = source
+
+        # draw route on map
         self.layer = LineMapLayer(GLOBALS.DAG)
         self.ids.mapview.add_layer(self.layer, mode="scatter")   # window scatter
 
+        # add button to return to menu
+        self.button_menu = Button(text="Menu", size_hint=(0.15,0.06),pos_hint={'x':0, 'y':0.94},font_size=30)
+        self.button_menu.bind(on_release=self.switch_screen)
+        self.add_widget(self.button_menu)      
+
+        # show marker at route end
         results = get_all_data_from_table_for_columnNameIsValue(GLOBALS.LOCAL_MAP_DATA_FILE_PATH,"route_coordinates","day",GLOBALS.DAG)
         coordinates_list = eval(results[0][1][1:-1])
-
         self.ids.mapview.center_on(coordinates_list[1],coordinates_list[0])
         self.ids.eind_marker.lat = coordinates_list[-1]
         self.ids.eind_marker.lon = coordinates_list[-2]+0.0003
         self.ids.label_eind_marker.text = f"Eind {GLOBALS.DAG}"
-
-        #add button to return to menu
-        self.button_menu = Button(text="Menu", size_hint=(0.15,0.06),pos_hint={'x':0, 'y':0.94},font_size=30)
-        self.button_menu.bind(on_release=self.switch_screen)
-        self.add_widget(self.button_menu)
 
         # add button to recentre on GPS or on start of route
         result = get_all_data_from_table_for_columnNameIsValue(GLOBALS.LOCAL_MAP_DATA_FILE_PATH,'metadata',"name","bounds")
@@ -46,7 +43,10 @@ class RouteMapScreen(Screen):
             self.button_gps.bind(on_press=self.center_map_on_gps)
         else:
             self.button_gps.bind(on_press=self.center_map_on_route)
-        self.add_widget(self.button_gps)
+        self.add_widget(self.button_gps)     
+
+        # start gps functionality
+        GpsHelper().run()
 
     def switch_screen(self, *args):
         self.manager.current = 'routes_index_screen'

@@ -1,3 +1,5 @@
+#:import GpsBlinker gps_blinker.GpsBlinker
+
 <LoginScreen>:
     BoxLayout:
         id:box_layout_screen
@@ -101,9 +103,10 @@
             id:mapview
             zoom: 16
             double_tap_zoom: True
-            MapMarkerPopup:
-                source:'blue_gps_dot.png'
+            GpsBlinker:
                 id: gps_tracker
+                # lat: 52.08
+                # lon: 4.33
             MapMarkerPopup:
                 id:eind_marker
                 source: "red_flag_gps.png"
@@ -112,3 +115,24 @@
                     color: 0,0,0,1
                     font_size: 24
                     bold: True
+
+<GpsBlinker>:
+    default_blink_size: 50
+    blink_size: 50
+    outer_opacity: 1
+
+    canvas.before:
+        # Outer circle
+        Color:
+            rgba: app.theme_cls.primary_color[:3] + [root.outer_opacity]
+        RoundedRectangle:
+            radius: [root.blink_size/2.0, ]
+            size: [root.blink_size, root.blink_size]
+            pos: root.pos[0] + root.size[0]/2.0 - root.blink_size/2.0, root.pos[1] + root.size[1]/2.0 - root.blink_size/2.0
+        # Inner Circle
+        Color:
+            rgba: app.theme_cls.primary_color
+        RoundedRectangle:
+            radius: [root.default_blink_size/2.0, ]
+            size: [root.default_blink_size, root.default_blink_size]
+            pos: [root.pos[0] + root.size[0]/2.0 - root.default_blink_size/2.0, root.pos[1] + root.size[1]/2.0 - root.default_blink_size/2.0]

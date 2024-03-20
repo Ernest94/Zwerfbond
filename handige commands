@@ -1,4 +1,6 @@
-docker run -it -v "$HOME/.buildozer":/home/user/.buildozer -v ./Zwerfbond/APP:/home/user/hostcwd amd64/ubuntu
+open -a Docker
+
+docker run -it -v "$HOME/.buildozer":/home/user/.buildozer -v $HOME/Zwerfbond/APP:/home/user/hostcwd amd64/ubuntu
 
 apt update && apt upgrade && apt install sudo
 
@@ -11,11 +13,32 @@ echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 su - ${USER}
 export USER=user HOME_DIR=/home/user PATH=/home/user/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev nano
+
+
 cd hostcwd
 pip3 install --user --upgrade Cython==0.29.33 wheel pip virtualenv buildozer
 
+buildozer android debug deploy
 
-image gemaakt van bovenstaand docker container, image id: 377cfe33708b
+export P4A_RELEASE_KEYSTORE=~/hostcwd/zwerfbond_key.keystore
+export P4A_RELEASE_KEYSTORE_PASSWD=Zw1rfb2nd
+export P4A_RELEASE_KEYALIAS_PASSWD=Zw1rfb2nd
+export P4A_RELEASE_KEYALIAS=zwerfbond_key
 
-docker attach 377cfe33708b
+buildozer -v android release
+
+##if buildozer command is not found error is thrown: export PATH=$PATH:~/.local/bin/
+
+keytool -printcert -jarfile zwerfbondappv2-4-arm64-v8a_armeabi-v7a-release.aab
+
+
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+
+ssh ernest@64.227.116.105
+scp /Users/ernestjanssen/Zwerfbond/BACKEND/map_data ernest@64.227.116.105:/home/ernest
+
+

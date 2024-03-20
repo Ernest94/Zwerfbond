@@ -5,6 +5,7 @@ Hemelse Hike/
 Paastocht/
 build/
 dist/
+bin/
 zwerfbond-ios/
 APP/GLOBALS.py
 */__pycache__/
