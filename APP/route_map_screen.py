@@ -1,8 +1,8 @@
 from kivy.uix.screenmanager import Screen
-from kivy.clock import Clock
 from kivy.uix.button import Button
 from kivy.garden.mapview import MapView
 from mapview.mbtsource import MBTilesMapSource
+from kivy.app import App
 
 from route_drawer_helper import LineMapLayer
 from gps_helper import GpsHelper
@@ -10,10 +10,17 @@ from utils import get_all_data_from_table_for_columnNameIsValue
 import GLOBALS
 
 class RouteMapScreen(Screen):
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+    def on_pre_enter(self):
+        # start updating the gps location
+        GpsHelper().start()
+
     def on_enter(self):
+        gps_tracker = App.get_running_app().root.get_screen("route_map_screen").ids.gps_tracker
+
         # load map data
         source = MBTilesMapSource(GLOBALS.LOCAL_MAP_DATA_FILE_PATH)
         self.ids.mapview.map_source = source
@@ -39,14 +46,15 @@ class RouteMapScreen(Screen):
         result = get_all_data_from_table_for_columnNameIsValue(GLOBALS.LOCAL_MAP_DATA_FILE_PATH,'metadata',"name","bounds")
         bbox = result[0][1].split(',')
         self.button_gps = Button(size_hint=(0.12,0.08),pos_hint={'x':0.05,'y':0.03},background_normal='recentre_gps_icon.png',background_down='recentre_gps_icon_down.png')
-        if self.ids.gps_tracker.lat>float(bbox[1]) and self.ids.gps_tracker.lat<float(bbox[3]) and self.ids.gps_tracker.lon>float(bbox[0]) and self.ids.gps_tracker.lon<float(bbox[2]):
+        if gps_tracker.lat>float(bbox[1]) and gps_tracker.lat<float(bbox[3]) and gps_tracker.lon>float(bbox[0]) and gps_tracker.lon<float(bbox[2]):
             self.button_gps.bind(on_press=self.center_map_on_gps)
         else:
             self.button_gps.bind(on_press=self.center_map_on_route)
         self.add_widget(self.button_gps)     
+        self.ids.mapview.trigger_update(True)
 
-        # start gps functionality
-        GpsHelper().run()
+        # start the Blinking the gps tracker
+        gps_tracker.blink(True)
 
     def switch_screen(self, *args):
         self.manager.current = 'routes_index_screen'
@@ -80,3 +88,5 @@ class RouteMapScreen(Screen):
     def on_leave(self):
         self.ids.mapview.remove_layer(self.layer)
         self.ids.mapview.zoom = 16
+        gps_tracker = App.get_running_app().root.get_screen("route_map_screen").ids.gps_tracker
+        gps_tracker.blink(False)

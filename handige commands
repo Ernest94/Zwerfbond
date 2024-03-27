@@ -19,7 +19,14 @@ sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pk
 cd hostcwd
 pip3 install --user --upgrade Cython==0.29.33 wheel pip virtualenv buildozer
 
+export PATH=$PATH:~/.local/bin/
 buildozer android debug deploy
+
+adb install bin/zwerfbondappv2-4-arm64-v8a_armeabi-v7a-debug.apk
+
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 
 export P4A_RELEASE_KEYSTORE=~/hostcwd/zwerfbond_key.keystore
 export P4A_RELEASE_KEYSTORE_PASSWD=Zw1rfb2nd

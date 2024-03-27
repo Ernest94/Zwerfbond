@@ -4,9 +4,9 @@ from kivymd.uix.button import MDRectangleFlatButton
 from kivy.uix.image import Image
 from functools import partial
 from kivy.uix.behaviors import ButtonBehavior
-
 from utils import get_all_data_from_table_for_columnNameIsValue
 import GLOBALS
+from gps_helper import GpsHelper
 
 class ImageButton(ButtonBehavior, Image):
     pass
@@ -18,6 +18,10 @@ class RoutesIndexScreen(Screen):
     def on_pre_enter(self):
         GLOBALS.DAG = ""
         Clock.schedule_once(self.set_fields,0)
+
+    def on_enter(self):
+        # start updating the gps location
+        GpsHelper().configure()
 
     def on_leave(self):
         self.ids.header_boxlayout.remove_widget(self.new_image_button)
