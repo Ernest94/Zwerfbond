@@ -1,0 +1,190 @@
+trigger:
+- main
+
+# Use macOS agent — required for iOS builds
+pool:
+  name: Default
+
+variables:
+  - group: zwerfbond-app-ci-vars
+  
+steps:
+  # 1) Checkout your repository
+  - checkout: self
+
+  # 2) Setup Node.js (Expo uses Node)
+  - task: NodeTool@0
+    inputs:
+      versionSpec: $(NODE_VERSION)
+    displayName: 'Use Node.js $(NODE_VERSION)'
+
+  # 3) Install dependencies
+  - script: |
+      npm install -g expo-cli
+      npm ci --force
+    displayName: 'Install dependencies'
+
+  # 4) Run lint
+  - script: |
+      npm run lint
+    displayName: 'Run lint'
+
+  # 5) Download secure keystore
+  - task: DownloadSecureFile@1
+    name: keystoreFile
+    inputs:
+      secureFile: 'zwerfbond_key.keystore'
+    displayName: "Download Android keystore"
+
+  # 6) Bump versionCode (Android) and buildNumber (iOS) using the Azure BuildId
+  - script: |
+      node -e "
+        const fs = require('fs');
+        const app = JSON.parse(fs.readFileSync('app.json', 'utf8'));
+        app.expo.android.versionCode = parseInt(process.env.BUILD_BUILDID);
+        app.expo.ios.buildNumber = process.env.BUILD_BUILDID;
+        fs.writeFileSync('app.json', JSON.stringify(app, null, 2));
+        console.log('versionCode set to:', app.expo.android.versionCode);
+        console.log('buildNumber set to:', app.expo.ios.buildNumber);
+      "
+    displayName: 'Bump Android versionCode and iOS buildNumber'
+
+  # 7) Prebuild native projects (generates android/ folders)
+  - script: |
+      npx expo prebuild --clean --platform android --non-interactive
+    displayName: 'Run expo prebuild for Android'
+
+  # 7) Copy keystore into android/app
+  - script: |
+      cp $(keystoreFile.secureFilePath) android/app/zwerfbond_key.keystore
+    displayName: "Place keystore in project"
+
+  # 8) Write keystore.properties for Gradle and patch build.gradle for release signing
+  - script: |
+      cat > android/keystore.properties << 'EOF'
+      storeFile=zwerfbond_key.keystore
+      storePassword=PLACEHOLDER_STORE
+      keyAlias=PLACEHOLDER_ALIAS
+      keyPassword=PLACEHOLDER_KEY
+      EOF
+      sed -i "" "s|PLACEHOLDER_STORE|$(ANDROID_KEYSTORE_PASSWORD)|g" android/keystore.properties
+      sed -i "" "s|PLACEHOLDER_ALIAS|$(ANDROID_KEYSTORE_ALIAS)|g" android/keystore.properties
+      sed -i "" "s|PLACEHOLDER_KEY|$(ANDROID_KEY_PASSWORD)|g" android/keystore.properties
+      node scripts/configure-android-signing.cjs
+    displayName: 'Configure Android release signing'
+
+  # 9) Build Android .AAB and .APK
+  - script: |
+      cd android
+      ./gradlew bundleRelease
+      ./gradlew assembleRelease
+    displayName: 'Build Android release AAB and APK'
+
+  # 10) Upload AAB to Google Play Store (internal track)
+  - task: GooglePlayRelease@4
+    displayName: 'Upload AAB to Google Play (internal track)'
+    inputs:
+      serviceConnection: 'GooglePlay'
+      action: 'SingleBundle'
+      applicationId: '$(APPLE_BUNDLE_ID)'
+      bundleFile: 'android/app/build/outputs/bundle/release/*.aab'
+      track: 'alpha'
+
+  # 11) Publish Android artifact
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: 'android/app/build/outputs'
+      ArtifactName: 'android-release'
+      publishLocation: 'Container'
+    displayName: 'Publish Android artifacts'
+
+  # 11) Install Apple Certificate
+  - task: InstallAppleCertificate@2
+    displayName: 'Install Apple Certificate'
+    inputs:
+      certSecureFile: apple_distribution.p12  # Upload your certificate to Pipeline Library
+      certPwd: '$(APPLE_CERT_PASSWORD)'  # Set as secret variable
+      keychain: 'temp'
+      deleteCert: true
+      opensslPkcsArgs: '-legacy'
+
+  # 12) Prebuild iOS project
+  - script: |
+      npx expo prebuild --platform ios --non-interactive --clean
+    displayName: 'Run expo prebuild for iOS'
+
+  # 13) Install Apple Provisioning Profile
+  - task: InstallAppleProvisioningProfile@1
+    displayName: 'Install Provisioning Profile'
+    inputs:
+      provisioningProfileLocation: 'secureFiles'
+      provProfileSecureFile: 'Zwerfbond_AppStore.mobileprovision'  # Upload to Pipeline Library
+      removeProfile: true
+
+  # 14) Archive iOS app with xcodebuild
+  - script: |
+      # Use absolute path for archive
+      ARCHIVE_PATH="$(Build.BinariesDirectory)/archive.xcarchive"
+      DERIVED_DATA_PATH="$(Build.BinariesDirectory)/DerivedData"
+      BUILD_LOG="$(Build.BinariesDirectory)/xcodebuild.log"
+
+      echo "Creating archive at: $ARCHIVE_PATH"
+      echo "Using derived data path: $DERIVED_DATA_PATH"
+      echo "Xcode version: $(xcodebuild -version)"
+      echo "Developer dir: $(xcode-select -p)"
+
+      mkdir -p "$(Build.BinariesDirectory)"
+      mkdir -p "$DERIVED_DATA_PATH"
+
+      xcodebuild archive \
+      -workspace 'ios/Zwerfbond.xcworkspace' \
+      -scheme 'Zwerfbond' \
+      -configuration 'Release' \
+      -sdk iphoneos \
+      -archivePath "$ARCHIVE_PATH" \
+      -derivedDataPath "$DERIVED_DATA_PATH" \
+      -destination 'generic/platform=iOS' \
+      CODE_SIGN_IDENTITY='$(APPLE_CERTIFICATE_SIGNING_IDENTITY)' \
+      CODE_SIGN_STYLE=Manual \
+      PROVISIONING_PROFILE_SPECIFIER='Zwerfbond_AppStore' \
+
+      2>&1 | tee "$BUILD_LOG"
+
+      BUILD_EXIT=${PIPESTATUS[0]}
+    displayName: 'Archive iOS App'
+
+  # 15) Export IPA
+  - script: |
+      mkdir -p "$(Build.ArtifactStagingDirectory)/output"
+      xcodebuild -exportArchive \
+        -archivePath "$(Build.BinariesDirectory)/archive.xcarchive" \
+        -exportPath "$(Build.ArtifactStagingDirectory)/output" \
+        -exportOptionsPlist "exportOptions.plist"
+    displayName: 'Export IPA'
+
+  # 16) Copy IPA to staging directory
+  - task: CopyFiles@2
+    displayName: 'Copy IPA to Staging'
+    inputs:
+      contents: '$(Build.ArtifactStagingDirectory)/output/*.ipa'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+      flattenFolders: true
+
+  # 17) Publish build artifacts
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish IPA Artifact'
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: 'ios-app'
+      publishLocation: 'Container'
+
+  # 18) Upload IPA to App Store Connect (TestFlight)
+  - task: AppStoreRelease@1
+    displayName: 'Upload IPA to App Store Connect (TestFlight)'
+    inputs:
+      serviceEndpoint: 'AppStoreConnect'
+      releaseTrack: 'TestFlight'
+      appIdentifier: '$(APPLE_BUNDLE_ID)'
+      ipaPath: '$(Build.ArtifactStagingDirectory)/output/*.ipa'
+      shouldSkipWaitingForProcessing: true
+      shouldSkipSubmission: true

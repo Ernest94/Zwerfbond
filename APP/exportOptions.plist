@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Distribution method -->
+    <key>method</key>
+    <string>app-store</string>
+
+    <!-- Specify manual signing -->
+    <key>signingStyle</key>
+    <string>manual</string>
+
+    <!-- Team ID for your Apple Developer account -->
+    <key>teamID</key>
+    <string>56847YW98G</string>
+
+    <!-- Mapping of bundle ID → provisioning profile name -->
+    <key>provisioningProfiles</key>
+    <dict>
+        <key>com.Zwerfbond.app</key>
+        <string>Zwerfbond_AppStore</string>
+    </dict>
+
+    <!-- Optional: include bitcode -->
+    <key>compileBitcode</key>
+    <true/>
+
+    <!-- Optional: manage app thinning -->
+    <key>thinning</key>
+    <string>&lt;none&gt;</string>
+</dict>
+</plist>

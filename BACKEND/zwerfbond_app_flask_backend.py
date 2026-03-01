@@ -1,11 +1,12 @@
 from flask import Flask,request,g,send_from_directory
 import sqlite3
 import json
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # allow all origins (or configure specific origins)
 
 PATH = '.'
-# FILE = 'map_data_Pt_2022.mbtiles'
 FILE = 'map_data.mbtiles'
 DATABASE = PATH + "/" + FILE
 
